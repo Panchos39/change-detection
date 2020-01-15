@@ -37,8 +37,8 @@
 "num_gpus": 1,
 "num_workers": 2,
 
-"epochs": 1,
-"batch_size": 32,
+"epochs": 100,
+"batch_size": 16,
 "learning_rate": 0.001,
 "loss_function": "tversky",
 "tversky_alpha": 0.1,

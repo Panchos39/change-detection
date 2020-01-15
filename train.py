@@ -76,11 +76,13 @@ for epoch in range(opt.epochs):
     logging.info('SET model mode to train!')
     batch_iter = 0
     for batch_img1, batch_img2, labels in train_loader:
+        print(batch_iter)
         logging.info("batch info " +
                      str(batch_iter) + " - " +
                      str(batch_iter+opt.batch_size))
         batch_iter = batch_iter+opt.batch_size
 
+        print(type(batch_img1))
         # Set variables for training
         batch_img1 = autograd.Variable(batch_img1).to(dev)
         batch_img2 = autograd.Variable(batch_img2).to(dev)
@@ -206,9 +208,10 @@ for epoch in range(opt.epochs):
             out.append(cd_preds)
 
         # log the full image to comet.ml
+        '''
         log_full_image(out, hs, ws, lc, lr, h, w,
                        opt, city, epoch, dev, comet)
-
+        '''
     """
     Store the weights of good epochs based on validation results
     """
@@ -221,12 +224,13 @@ for epoch in range(opt.epochs):
         metadata['validation_metrics'] = mean_val_metrics
 
         # Save to comet.ml and in GCS
-        with open('/tmp/metadata_epoch_' + str(epoch) + '.json', 'w') as fout:
+        with open('./tmp/metadata_epoch_' + str(epoch) + '.json', 'w') as fout:
             json.dump(metadata, fout)
-
-        torch.save(model, '/tmp/checkpoint_epoch_'+str(epoch)+'.pt')
-        upload_file_path = '/tmp/checkpoint_epoch_'+str(epoch)+'.pt'
-        upload_metadata_file_path = '/tmp/metadata_epoch_' + str(epoch) + '.json'
+        print('gavno')
+        torch.save(model, './tmp/checkpoint_epoch_'+str(epoch)+'.pt')
+        print('save gavno')
+        upload_file_path = './tmp/checkpoint_epoch_'+str(epoch)+'.pt'
+        upload_metadata_file_path = './tmp/metadata_epoch_' + str(epoch) + '.json'
         #experiment.outputs_store.upload_file(upload_file_path)
         #experiment.outputs_store.upload_file(upload_metadata_file_path)
         #comet.log_asset(upload_metadata_file_path)
