@@ -42,7 +42,7 @@ def generate_patches(opt, validation_city):
     # sort bands to ensure that B01 -> B12 order
     d1_bands.sort()
     d2_bands.sort()
-
+    #print(len(d1_bands))
     # load band 2 from d1 bands to get template image dimensions
     template = rasterio.open(d1_bands[2])
 
@@ -131,6 +131,16 @@ def log_full_image(out, hs, ws, lc, lr, h, w, opt,
                fig_name=file_path)
 
 
+def get_full_image(out, hs, ws, lc, lr, h, w, opt,
+                   validation_city) :
+    out = np.vstack(out)
+
+    mask = _get_bands(out, hs, ws, lc, lr, h, w, patch_size=opt.patch_size)
+
+    return scale(mask)
+    #comet.log_image(file_path+'.png')
+
+    
 def _get_patches(bands, patch_dim=64):
     """given a 13 band image, get a stack of patches
        with metadata for reconstruction
